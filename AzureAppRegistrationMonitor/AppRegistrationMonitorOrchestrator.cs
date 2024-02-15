@@ -1,50 +1,95 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using AzureAppRegistrationMonitor.Core.Managers;
+using AzureAppRegistrationMonitor.Core.Models;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
+using Microsoft.Graph.Models;
 
 namespace AzureAppRegistrationMonitor
 {
-    public static class AppRegistrationMonitorOrchestrator
+    public class AppRegistrationMonitorOrchestrator
     {
-        [FunctionName("Orchestrator")]
-        public static async Task<List<string>> RunOrchestrator(
-            [OrchestrationTrigger] IDurableOrchestrationContext context)
+        private readonly ILogger<AppRegistrationMonitorApi> logger;
+        private readonly AppRegistrationManager appRegistrationManager;
+        private readonly EmailManager emailManager;
+        private readonly ConfigurationModel configuration;
+
+        public AppRegistrationMonitorOrchestrator(ILogger<AppRegistrationMonitorApi> logger, AppRegistrationManager appRegistrationManager, EmailManager emailManager, ConfigurationModel configurationModel)
         {
-            var outputs = new List<string>();
-
-            // Replace "hello" with the name of your Durable Activity Function.
-            outputs.Add(await context.CallActivityAsync<string>(nameof(SayHello), "Tokyo"));
-            outputs.Add(await context.CallActivityAsync<string>(nameof(SayHello), "Seattle"));
-            outputs.Add(await context.CallActivityAsync<string>(nameof(SayHello), "London"));
-
-            // returns ["Hello Tokyo!", "Hello Seattle!", "Hello London!"]
-            return outputs;
+            this.logger = logger;
+            this.appRegistrationManager = appRegistrationManager;
+            this.emailManager = emailManager;
+            this.configuration = configurationModel;
         }
 
-        [FunctionName(nameof(SayHello))]
-        public static string SayHello([ActivityTrigger] string name, ILogger log)
-        {
-            log.LogInformation("Saying hello to {name}.", name);
-            return $"Hello {name}!";
-        }
-
-        [FunctionName("Orchestrator_HttpStart")]
-        public static async Task<HttpResponseMessage> HttpStart(
+        [FunctionName("StartOrchestrator")]
+        public async Task<HttpResponseMessage> HttpStart(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestMessage req,
-            [DurableClient] IDurableOrchestrationClient starter,
-            ILogger log)
+            [DurableClient] IDurableOrchestrationClient starter)
         {
             // Function input comes from the request content.
             string instanceId = await starter.StartNewAsync("Orchestrator", null);
 
-            log.LogInformation("Started orchestration with ID = '{instanceId}'.", instanceId);
+            this.logger.LogInformation("Started orchestration with ID = '{instanceId}'.", instanceId);
 
             return starter.CreateCheckStatusResponse(req, instanceId);
+        }
+
+        [FunctionName("Orchestrator")]
+        public async Task RunOrchestrator(
+            [OrchestrationTrigger] IDurableOrchestrationContext context)
+        {
+            try
+            {
+                var apps = await context.CallActivityAsync<List<Application>>(nameof(GetAppRegistrationsAcync), null);
+                var tasks = new List<Task<List<AppRegistrationModel>>>();
+                foreach (var app in apps)
+                {
+                    var task = context.CallActivityAsync<List<AppRegistrationModel>>(nameof(GetAppDetailsToBeNotifiedAsync), app);
+                    tasks.Add(task);
+                }
+
+                await Task.WhenAll(tasks);
+
+                var appsToBeNotified = new List<AppRegistrationModel>();
+                foreach (var task in tasks)
+                {
+                    appsToBeNotified.AddRange(task.Result);
+                }
+
+                var emailContent = this.emailManager.GenerateEmailBody(appsToBeNotified.ToList());
+                await context.CallActivityAsync<Task>(nameof(SendEmail), emailContent);
+            }
+            catch (System.Exception ex)
+            {
+                this.logger.LogError(ex, ex.Message);
+            }
+        }
+
+        [FunctionName(nameof(GetAppRegistrationsAcync))]
+        public async Task<List<Application>> GetAppRegistrationsAcync([ActivityTrigger] string name)
+        {
+            return await this.appRegistrationManager.GetAppRegistrationsAcync();
+        }
+
+        [FunctionName(nameof(GetAppDetailsToBeNotifiedAsync))]
+        public async Task<List<AppRegistrationModel>> GetAppDetailsToBeNotifiedAsync([ActivityTrigger] Application app)
+        {
+            return await this.appRegistrationManager.GetAppDetailsToBeNotifiedAsync(app, this.configuration.TimeInDaysForNotification);
+        }
+
+        [FunctionName(nameof(SendEmail))]
+        public async Task SendEmail([ActivityTrigger] string content)
+        {
+            await this.emailManager.SendEmail(this.configuration.FromAddress, this.configuration.ToAddress, this.configuration.EmailSubject, content, BodyType.Html);
         }
     }
 }
