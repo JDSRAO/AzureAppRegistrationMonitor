@@ -14,14 +14,14 @@ using System.Web.Http;
 
 namespace AzureAppRegistrationMonitor
 {
-    public class MonitorApi
+    public class AppRegistrationMonitorApi
     {
-        private readonly ILogger<MonitorApi> logger;
+        private readonly ILogger<AppRegistrationMonitorApi> logger;
         private readonly AppRegistrationManager appRegistrationManager;
         private readonly EmailManager emailManager;
         private readonly ConfigurationModel configuration;
 
-        public MonitorApi(ILogger<MonitorApi> logger, AppRegistrationManager appRegistrationManager, EmailManager emailManager, ConfigurationModel configurationModel)
+        public AppRegistrationMonitorApi(ILogger<AppRegistrationMonitorApi> logger, AppRegistrationManager appRegistrationManager, EmailManager emailManager, ConfigurationModel configurationModel)
         {
             this.logger = logger;
             this.appRegistrationManager = appRegistrationManager;
