@@ -12,18 +12,12 @@ namespace AzureAppRegistrationMonitor
 {
     public class Startup : FunctionsStartup
     {
-        public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
-        {
-            string cs = Environment.GetEnvironmentVariable("ConnectionString");
-            builder.ConfigurationBuilder.AddAzureAppConfiguration(cs);
-        }
-
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            //var config = new ConfigurationModel();
-            //context.Configuration.Bind(config);
+            var config = new ConfigurationModel();
+            builder.GetContext().Configuration.Bind(config);
 
-            builder.Services.AddSingleton<ConfigurationModel>();// (config);
+            builder.Services.AddSingleton<ConfigurationModel>(config);
 
             builder.Services.AddSingleton<GraphServiceClient>(x =>
             {
