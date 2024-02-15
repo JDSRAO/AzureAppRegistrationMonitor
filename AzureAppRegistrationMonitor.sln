@@ -5,6 +5,8 @@ VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureAppRegistrationMonitor", "AzureAppRegistrationMonitor\AzureAppRegistrationMonitor.csproj", "{C26B4135-C4DA-4FBC-B12B-50BAC0DF091B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureAppRegistrationMonitor.Core", "AzureAppRegistrationMonitor.Core\AzureAppRegistrationMonitor.Core.csproj", "{C862DC2F-50B5-4873-9ED7-D980AB6AD76A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{C26B4135-C4DA-4FBC-B12B-50BAC0DF091B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C26B4135-C4DA-4FBC-B12B-50BAC0DF091B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C26B4135-C4DA-4FBC-B12B-50BAC0DF091B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C862DC2F-50B5-4873-9ED7-D980AB6AD76A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C862DC2F-50B5-4873-9ED7-D980AB6AD76A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C862DC2F-50B5-4873-9ED7-D980AB6AD76A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C862DC2F-50B5-4873-9ED7-D980AB6AD76A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
