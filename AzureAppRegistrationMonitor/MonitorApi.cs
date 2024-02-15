@@ -17,13 +17,16 @@ namespace AzureAppRegistrationMonitor
     public class MonitorApi
     {
         private readonly ILogger<MonitorApi> logger;
-        private readonly AppRegistrationManager appRegistractionManager;
+        private readonly AppRegistrationManager appRegistrationManager;
         private readonly EmailManager emailManager;
         private readonly ConfigurationModel configuration;
 
-        public MonitorApi()
+        public MonitorApi(ILogger<MonitorApi> logger, AppRegistrationManager appRegistrationManager, EmailManager emailManager, ConfigurationModel configurationModel)
         {
-                
+            this.logger = logger;
+            this.appRegistrationManager = appRegistrationManager;
+            this.emailManager = emailManager;
+            this.configuration = configurationModel;
         }
 
         [FunctionName("MonitorApps")]
@@ -34,13 +37,13 @@ namespace AzureAppRegistrationMonitor
             {
                 this.logger.LogInformation("C# HTTP trigger function processed a request.");
 
-                var apps = await this.appRegistractionManager.GetAppRegistrationsAcync();
+                var apps = await this.appRegistrationManager.GetAppRegistrationsAcync();
                 ConcurrentBag<AppRegistrationModel> appsToBeNotified = new ConcurrentBag<AppRegistrationModel>();
                 if (apps.Any())
                 {
                     await Parallel.ForEachAsync(apps, new ParallelOptions { MaxDegreeOfParallelism = 100 }, async (app, _) =>
                     {
-                        var invalidCredentails = await this.appRegistractionManager.GetAppDetailsToBeNotifiedAsync(app, this.configuration.TimeInDaysForNotification);
+                        var invalidCredentails = await this.appRegistrationManager.GetAppDetailsToBeNotifiedAsync(app, this.configuration.TimeInDaysForNotification);
                         invalidCredentails.ForEach(x =>
                         {
                             appsToBeNotified.Add(x);
