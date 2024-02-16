@@ -1,17 +1,14 @@
-using System.Collections.Concurrent;
+using AzureAppRegistrationMonitor.Core.Managers;
+using AzureAppRegistrationMonitor.Core.Models;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.DurableTask;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.Graph.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using AzureAppRegistrationMonitor.Core.Managers;
-using AzureAppRegistrationMonitor.Core.Models;
-using Google.Protobuf.WellKnownTypes;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.DurableTask;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Host;
-using Microsoft.Extensions.Logging;
-using Microsoft.Graph.Models;
 
 namespace AzureAppRegistrationMonitor
 {
