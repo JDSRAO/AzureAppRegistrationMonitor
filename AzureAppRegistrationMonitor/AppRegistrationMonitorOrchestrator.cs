@@ -89,7 +89,7 @@ namespace AzureAppRegistrationMonitor
         [FunctionName(nameof(SendEmail))]
         public async Task SendEmail([ActivityTrigger] string content)
         {
-            await this.emailManager.SendEmail(this.configuration.FromAddress, this.configuration.ToAddress, this.configuration.EmailSubject, content, BodyType.Html);
+            await this.emailManager.SendEmail(this.configuration.EmailFromAddress, this.configuration.EmailToAddress.Split(','), this.configuration.EmailSubject, content, BodyType.Html);
         }
     }
 }
