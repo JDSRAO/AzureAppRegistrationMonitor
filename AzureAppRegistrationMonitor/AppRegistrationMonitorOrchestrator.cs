@@ -29,7 +29,7 @@ namespace AzureAppRegistrationMonitor
 
         [FunctionName("StartOrchestrator")]
         public async Task<HttpResponseMessage> HttpStart(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "orchestrators/{functionName}")] HttpRequestMessage req,
             [DurableClient] IDurableOrchestrationClient starter)
         {
             // Function input comes from the request content.
