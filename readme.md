@@ -5,9 +5,6 @@
 ## Summary
 Azure App Registration Monitor Console App scans the entire tenancy and consolidates a list of credentails (certificates and secrets) which are due to for expiry in configurable number of days and sends a consolidated email to relavent parties to take necessary action.
 
-
-This page describes the steps needed to use the "AzureAppRegistractionMonitor".
-
 ## Microsoft Entra ID Configuration
 - Please create a new app registration in Microsoft Entra ID.
 - After creation, make a note of the client Id and tenant Id.
@@ -26,17 +23,11 @@ This page describes the steps needed to use the "AzureAppRegistractionMonitor".
 		- User.Read
 
 ## App Settings Instructions
-- ClientId - Follow steps mentioned in Microsoft Entra ID Configuration.
-- ClientSecret - Follow steps mentioned in Microsoft Entra ID Configuration.
+- ClientId - Follow steps mentioned in Microsoft Entra ID Configuration to get this value.
+- ClientSecret - Follow steps mentioned in Microsoft Entra ID Configuration to get this value.
+- EmailFromAddress - 
 - EmailSubject - Subject of the summary email that contains the list of app registations for whom action needs to be taken.
 - FromAddress - An email, from which mailbox the summary email should be sent. Please note that, this user should have an active mailbox.
-- TenantId - Follow steps mentioned in Microsoft Entra ID Configuration.
+- EmailToAddress - A comppa separated values of email(s),, to whom the summary email should be sent for action. For example, user1@email.com,user2@email.com
+- TenantId - Follow steps mentioned in Microsoft Entra ID Configuration to get this value.
 - TimeInDaysForNotification - Number of days before expiration when the notification needs to be sent.
-- ToAddress - An arry of email, to whom the summary email should be sent for action.
-
-## Usage
-- Go to the root directory where the code is present i.e., "AzureAppRegistractionMonitor"
-- Open any command line and go to the above path
-- Type "dotnet build -c Release"
-- Now go to the path "AzureAppRegistractionMonitor/bin/Release/net6.0"
-- Run the file named "AzureAppRegistractionMonitor.exe"
