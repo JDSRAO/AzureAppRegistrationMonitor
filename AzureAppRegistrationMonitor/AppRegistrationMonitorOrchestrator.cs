@@ -41,8 +41,7 @@ namespace AzureAppRegistrationMonitor
         }
 
         [FunctionName("Orchestrator")]
-        public async Task RunOrchestrator(
-            [OrchestrationTrigger] IDurableOrchestrationContext context)
+        public async Task RunOrchestrator([OrchestrationTrigger] IDurableOrchestrationContext context)
         {
             try
             {

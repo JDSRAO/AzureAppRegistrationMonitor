@@ -1,11 +1,15 @@
-﻿# Azure App Registration Monitor Console App
-
-[[_TOC_]]
+﻿# Azure App Registration Monitor
 
 ## Summary
-Azure App Registration Monitor Console App scans the entire tenancy and consolidates a list of credentails (certificates and secrets) which are due to for expiry in configurable number of days and sends a consolidated email to relavent parties to take necessary action.
+Azure App Registration Monitor scans the entire tenancy and consolidates a list of credentails (certificates and secrets) which are due to for expiry in configurable number of days and sends a consolidated email to relavent parties to take necessary action.
 
-## Microsoft Entra ID Configuration
+## Problem Area
+- Most of the time we face the challenge of having to follow up with the credentials expiry dates either by keeping reminders or manully checking the azure portal or in the worst case renew the credentails after they have expired. But no more, this app will monitor the azure tenency for app registrations expiring in the upcoming few days and notify relavent people/owners and azure admins (configurable) to take necessary actions.
+
+## Configration
+- Below describes the necessary configruation that are needed for the application.
+
+### Microsoft Entra ID Configuration
 - Please create a new app registration in Microsoft Entra ID.
 - After creation, make a note of the client Id and tenant Id.
 - Generate a new client secret for the above generated client Id.
@@ -22,7 +26,7 @@ Azure App Registration Monitor Console App scans the entire tenancy and consolid
 		- Mail.Send
 		- User.Read
 
-## App Settings Instructions
+### App Settings Instructions
 - ClientId - Follow steps mentioned in Microsoft Entra ID Configuration to get this value.
 - ClientSecret - Follow steps mentioned in Microsoft Entra ID Configuration to get this value.
 - EmailFromAddress - 
