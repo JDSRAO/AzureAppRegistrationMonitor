@@ -3,7 +3,7 @@
 Azure App Registration Monitor scans the entire tenancy and consolidates a list of credentails (certificates and secrets) which are due to for expiry in configurable number of days and sends a consolidated email to relavent parties to take necessary action.
 
 ## How this helps?
-- Most of the time we face the challenge of having to follow up with the credentials expiry dates either by keeping reminders or manully checking the azure portal or in the worst case renew the credentails after they have expired. But no more, this app will monitor the azure tenency for app registrations expiring in the upcoming few days and notify relavent people/owners and azure admins (configurable) to take necessary actions.
+- Most of the time we face the challenge of having to follow up with the credentials expiry dates either by keeping reminders or manully checking the azure portal or in the worst case renew the credentails after they have expired. But no more, this app will monitor the azure tenency for app registrations expiring in the upcoming few days (configurable) and notify relavent people/owners and azure admins (configurable) to take necessary actions.
 
 ## Help us improve the application
 Help us improve out the application by sending us pull-requests or opening a [GitHub Issue](https://github.com/JDSRAO/FlatFileGenerator/issues)
@@ -42,7 +42,7 @@ The easiest way to use this proejct without using Git is to download the zip fil
 		- Mail.Send
 		- User.Read
 
-### Function Settings Instructions
+### Function App Configuration Instructions
 - ClientId - Follow steps mentioned in Microsoft Entra ID Configuration to get this value.
 - ClientSecret - Follow steps mentioned in Microsoft Entra ID Configuration to get this value.
 - EmailFromAddress - 
