@@ -8,6 +8,8 @@ Azure App Registration Monitor scans the entire tenancy and consolidates a list 
 ## Help us improve the application
 Help us improve out the application by sending us pull-requests or opening a [GitHub Issue](https://github.com/JDSRAO/FlatFileGenerator/issues)
 
+## Please note that this is still a work in progress
+
 ## Table of Contents  
 1. [Development](#development)
 1. [Configuration](#configration) 
