@@ -1,6 +1,6 @@
 ﻿namespace AzureAppRegistrationMonitor.Core.Models
 {
-    public class AppRegistrationModel
+    public class CredentialModel
     {
         public string AppId { get; set; } = default!;
 
@@ -15,5 +15,7 @@
         public string Type { get; set; } = default!;
 
         public DateTime ExpiryDate { get; set; }
+
+        public string[] Owners { get; set; } = new string[0];
     }
 }

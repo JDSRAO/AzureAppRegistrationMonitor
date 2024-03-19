@@ -27,9 +27,18 @@ namespace AzureAppRegistrationMonitor.Core.Managers
             return apps;
         }
 
-        public async Task<List<AppRegistrationModel>> GetAppDetailsToBeNotifiedAsync(Application application, int numberOfDays)
+        public async Task<List<CredentialModel>> GetAppDetailsToBeNotifiedAsync(Application application, int numberOfDays)
         {
-            var invalidCredentials = new List<AppRegistrationModel>();
+            var invalidCredentials = new List<CredentialModel>();
+            var owners = new List<string>();
+
+            if (application.Owners != null)
+            {
+                foreach (User owner in application.Owners)
+                {
+                    owners.Add(owner.UserPrincipalName);
+                }
+            }
 
             if (application.KeyCredentials != null)
             {
@@ -40,7 +49,7 @@ namespace AzureAppRegistrationMonitor.Core.Managers
                         var interval = (credential.EndDateTime - DateTime.UtcNow).Value.TotalDays;
                         if (interval < numberOfDays)
                         {
-                            invalidCredentials.Add(new AppRegistrationModel
+                            invalidCredentials.Add(new CredentialModel
                             {
                                 AppId = application.AppId,
                                 AppDisplayName = application.DisplayName,
@@ -49,6 +58,7 @@ namespace AzureAppRegistrationMonitor.Core.Managers
                                 DaysUntilExpiry = interval,
                                 Type = CredentialTypes.KeyCredential,
                                 ExpiryDate = credential.EndDateTime.Value.Date,
+                                Owners = owners.ToArray(),
                             });
                         }
                     }
@@ -64,7 +74,7 @@ namespace AzureAppRegistrationMonitor.Core.Managers
                         var interval = (credential.EndDateTime - DateTime.UtcNow).Value.TotalDays;
                         if (true)
                         {
-                            invalidCredentials.Add(new AppRegistrationModel
+                            invalidCredentials.Add(new CredentialModel
                             {
                                 AppId = application.AppId,
                                 AppDisplayName = application.DisplayName,
@@ -73,6 +83,7 @@ namespace AzureAppRegistrationMonitor.Core.Managers
                                 DaysUntilExpiry = interval,
                                 Type = CredentialTypes.PasswordCredential,
                                 ExpiryDate = credential.EndDateTime.Value.Date,
+                                Owners = owners.ToArray(),
                             });
                         }
                     }

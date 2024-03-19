@@ -46,16 +46,16 @@ namespace AzureAppRegistrationMonitor
             try
             {
                 var apps = await context.CallActivityAsync<List<Application>>(nameof(GetAppRegistrationsAcync), null);
-                var tasks = new List<Task<List<AppRegistrationModel>>>();
+                var tasks = new List<Task<List<CredentialModel>>>();
                 foreach (var app in apps)
                 {
-                    var task = context.CallActivityAsync<List<AppRegistrationModel>>(nameof(GetAppDetailsToBeNotifiedAsync), app);
+                    var task = context.CallActivityAsync<List<CredentialModel>>(nameof(GetAppDetailsToBeNotifiedAsync), app);
                     tasks.Add(task);
                 }
 
                 await Task.WhenAll(tasks);
 
-                var appsToBeNotified = new List<AppRegistrationModel>();
+                var appsToBeNotified = new List<CredentialModel>();
                 foreach (var task in tasks)
                 {
                     appsToBeNotified.AddRange(task.Result);
@@ -77,7 +77,7 @@ namespace AzureAppRegistrationMonitor
         }
 
         [FunctionName(nameof(GetAppDetailsToBeNotifiedAsync))]
-        public async Task<List<AppRegistrationModel>> GetAppDetailsToBeNotifiedAsync([ActivityTrigger] Application app)
+        public async Task<List<CredentialModel>> GetAppDetailsToBeNotifiedAsync([ActivityTrigger] Application app)
         {
             return await this.appRegistrationManager.GetAppDetailsToBeNotifiedAsync(app, this.configuration.TimeInDaysForNotification);
         }

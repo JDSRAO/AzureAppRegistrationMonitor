@@ -38,7 +38,7 @@ namespace AzureAppRegistrationMonitor
                 this.logger.LogInformation("C# HTTP trigger function processed a request.");
 
                 var apps = await this.appRegistrationManager.GetAppRegistrationsAcync();
-                ConcurrentBag<AppRegistrationModel> appsToBeNotified = new ConcurrentBag<AppRegistrationModel>();
+                ConcurrentBag<CredentialModel> appsToBeNotified = new ConcurrentBag<CredentialModel>();
                 if (apps.Any())
                 {
                     await Parallel.ForEachAsync(apps, new ParallelOptions { MaxDegreeOfParallelism = 100 }, async (app, _) =>
@@ -54,7 +54,7 @@ namespace AzureAppRegistrationMonitor
                 var emailContent = this.emailManager.GenerateEmailBody(appsToBeNotified.ToList());
                 await this.emailManager.SendEmail(this.configuration.EmailFromAddress, this.configuration.EmailToAddress.Split(','), this.configuration.EmailSubject, emailContent, BodyType.Html);
 
-                return new OkObjectResult("");
+                return new OkResult();
             }
             catch (Exception ex)
             {

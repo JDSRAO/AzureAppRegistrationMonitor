@@ -15,7 +15,7 @@ namespace AzureAppRegistrationMonitor.Core.Managers
             this.graphClient = graphClient;
         }
 
-        public string GenerateEmailBody(List<AppRegistrationModel> apps)
+        public string GenerateEmailBody(List<CredentialModel> apps)
         {
             var content = new StringBuilder();
 
@@ -32,13 +32,13 @@ namespace AzureAppRegistrationMonitor.Core.Managers
             content.AppendLine("<table>");
             content.AppendLine("<thead>");
 
-            content.AppendLine($"<th>{nameof(AppRegistrationModel.AppId)}</th>");
-            content.AppendLine($"<th>{nameof(AppRegistrationModel.AppDisplayName)}</th>");
-            content.AppendLine($"<th>{nameof(AppRegistrationModel.CredentialId)}</th>");
-            content.AppendLine($"<th>{nameof(AppRegistrationModel.CredentialDisplayName)}</th>");
-            content.AppendLine($"<th>{nameof(AppRegistrationModel.Type)}</th>");
-            content.AppendLine($"<th>{nameof(AppRegistrationModel.DaysUntilExpiry)}</th>");
-            content.AppendLine($"<th>{nameof(AppRegistrationModel.ExpiryDate)}</th>");
+            content.AppendLine($"<th>{nameof(CredentialModel.AppId)}</th>");
+            content.AppendLine($"<th>{nameof(CredentialModel.AppDisplayName)}</th>");
+            content.AppendLine($"<th>{nameof(CredentialModel.CredentialId)}</th>");
+            content.AppendLine($"<th>{nameof(CredentialModel.CredentialDisplayName)}</th>");
+            content.AppendLine($"<th>{nameof(CredentialModel.Type)}</th>");
+            content.AppendLine($"<th>{nameof(CredentialModel.DaysUntilExpiry)}</th>");
+            content.AppendLine($"<th>{nameof(CredentialModel.ExpiryDate)}</th>");
 
             content.AppendLine("</thead>");
 
