@@ -39,6 +39,7 @@ namespace AzureAppRegistrationMonitor.Core.Managers
             content.AppendLine($"<th>{nameof(CredentialModel.Type)}</th>");
             content.AppendLine($"<th>{nameof(CredentialModel.DaysUntilExpiry)}</th>");
             content.AppendLine($"<th>{nameof(CredentialModel.ExpiryDate)}</th>");
+            content.AppendLine($"<th>{nameof(CredentialModel.Owners)}</th>");
 
             content.AppendLine("</thead>");
 
@@ -53,6 +54,7 @@ namespace AzureAppRegistrationMonitor.Core.Managers
                 content.AppendLine($"<td>{app.Type}</td>");
                 content.AppendLine($"<td>{app.DaysUntilExpiry}</td>");
                 content.AppendLine($"<td>{app.ExpiryDate}</td>");
+                content.AppendLine($"<td>{string.Join(",", app.Owners)}</td>");                
             }
 
             content.AppendLine("</tbody>");
