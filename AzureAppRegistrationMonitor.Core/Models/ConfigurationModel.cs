@@ -15,5 +15,7 @@
         public string TenantId { get; set; } = default!;
 
         public int TimeInDaysForNotification { get; set; } = default!;
+
+        public string SearchCriteria { get; set; } = default!;
     }
 }

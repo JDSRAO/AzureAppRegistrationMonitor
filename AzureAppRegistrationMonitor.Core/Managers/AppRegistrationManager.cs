@@ -1,16 +1,20 @@
 ﻿using AzureAppRegistrationMonitor.Core.Models;
 using Microsoft.Graph;
 using Microsoft.Graph.Models;
+using Microsoft.Kiota.Abstractions;
+using System.Text;
 
 namespace AzureAppRegistrationMonitor.Core.Managers
 {
     public class AppRegistrationManager
     {
         private readonly GraphServiceClient graphServiceClient;
+        private readonly ConfigurationModel configuration;
 
-        public AppRegistrationManager(GraphServiceClient graphServiceClient)
+        public AppRegistrationManager(GraphServiceClient graphServiceClient, ConfigurationModel configuration)
         {
             this.graphServiceClient = graphServiceClient;
+            this.configuration = configuration;
         }
 
         public async Task<List<Application>> GetAppRegistrationsAcync()
@@ -19,9 +23,31 @@ namespace AzureAppRegistrationMonitor.Core.Managers
             string? odataNextLink = null;
             do
             {
-                var applications = await this.graphServiceClient.Applications.GetAsync();
-                odataNextLink = applications.OdataNextLink;
-                apps.AddRange(applications.Value);
+                if (string.IsNullOrWhiteSpace(this.configuration.SearchCriteria))
+                {
+                    var applications = await this.graphServiceClient.Applications.GetAsync();
+                    odataNextLink = applications.OdataNextLink;
+                    apps.AddRange(applications.Value);
+                }
+                else
+                {
+                    var applications = await this.graphServiceClient.Applications.GetAsync((requestConfiguration) =>
+                    {
+                        var filters = new List<string>();
+                        foreach (var filter in this.configuration.SearchCriteria.Split(","))
+                        {
+                            filters.Add($"\"displayName:{filter}\"");
+                        }
+
+                        var apiFilter = new StringBuilder();
+                        apiFilter.Append(string.Join(" OR ", filters));
+
+                        requestConfiguration.QueryParameters.Search = apiFilter.ToString();
+                        requestConfiguration.Headers.Add("ConsistencyLevel", "eventual");
+                    });
+                    odataNextLink = applications.OdataNextLink;
+                    apps.AddRange(applications.Value);
+                }
             } while (odataNextLink != null);
 
             return apps;
