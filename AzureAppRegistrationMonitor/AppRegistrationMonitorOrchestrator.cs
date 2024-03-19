@@ -61,7 +61,10 @@ namespace AzureAppRegistrationMonitor
                     appsToBeNotified.AddRange(task.Result);
                 }
 
-                await context.CallActivityAsync<Task>(nameof(SendEmail), appsToBeNotified);
+                if (appsToBeNotified.Any())
+                {
+                    await context.CallActivityAsync<Task>(nameof(SendEmail), appsToBeNotified);
+                }
             }
             catch (System.Exception ex)
             {

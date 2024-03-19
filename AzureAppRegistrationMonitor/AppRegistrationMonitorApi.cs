@@ -51,15 +51,18 @@ namespace AzureAppRegistrationMonitor
                     });
                 }
 
-                var owners = new List<string>();
-                appsToBeNotified.Select(x =>
+                if (appsToBeNotified.Any())
                 {
-                    owners.AddRange(x.Owners);
-                    return x;
-                });
+                    var owners = new List<string>();
+                    appsToBeNotified.Select(x =>
+                    {
+                        owners.AddRange(x.Owners);
+                        return x;
+                    });
 
-                var emailContent = this.emailManager.GenerateEmailBody(appsToBeNotified.ToList());
-                await this.emailManager.SendEmail(this.configuration.EmailFromAddress, this.configuration.EmailToAzureAdmins.Split(','), owners.ToArray(), this.configuration.EmailSubject, emailContent);
+                    var emailContent = this.emailManager.GenerateEmailBody(appsToBeNotified.ToList());
+                    await this.emailManager.SendEmail(this.configuration.EmailFromAddress, this.configuration.EmailToAzureAdmins.Split(','), owners.ToArray(), this.configuration.EmailSubject, emailContent);
+                }
 
                 return new OkResult();
             }
