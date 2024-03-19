@@ -1,7 +1,6 @@
 ﻿using AzureAppRegistrationMonitor.Core.Models;
 using Microsoft.Graph;
 using Microsoft.Graph.Models;
-using Microsoft.Kiota.Abstractions;
 using System.Text;
 
 namespace AzureAppRegistrationMonitor.Core.Managers
@@ -42,6 +41,8 @@ namespace AzureAppRegistrationMonitor.Core.Managers
                         var apiFilter = new StringBuilder();
                         apiFilter.Append(string.Join(" OR ", filters));
 
+                        //requestConfiguration.QueryParameters.Expand = new string[] { "owners" };
+                        //requestConfiguration.QueryParameters.Count = true;
                         requestConfiguration.QueryParameters.Search = apiFilter.ToString();
                         requestConfiguration.Headers.Add("ConsistencyLevel", "eventual");
                     });
@@ -58,12 +59,16 @@ namespace AzureAppRegistrationMonitor.Core.Managers
             var invalidCredentials = new List<CredentialModel>();
             var owners = new List<string>();
 
-            if (application.Owners != null)
+            var ownersInformation = await this.graphServiceClient.Applications[$"{application.Id}"].Owners.GetAsync();
+            if (ownersInformation.Value != null)
             {
-                foreach (User owner in application.Owners)
+                ownersInformation.Value.ForEach(x =>
                 {
-                    owners.Add(owner.UserPrincipalName);
-                }
+                    if (((User)x).Mail != null)
+                    {
+                        owners.Add(((User)x).Mail);
+                    }
+                });
             }
 
             if (application.KeyCredentials != null)
