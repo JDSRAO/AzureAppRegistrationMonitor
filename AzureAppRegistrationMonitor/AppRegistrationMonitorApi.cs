@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Graph.Models;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -51,8 +51,15 @@ namespace AzureAppRegistrationMonitor
                     });
                 }
 
+                var owners = new List<string>();
+                appsToBeNotified.Select(x =>
+                {
+                    owners.AddRange(x.Owners);
+                    return x;
+                });
+
                 var emailContent = this.emailManager.GenerateEmailBody(appsToBeNotified.ToList());
-                await this.emailManager.SendEmail(this.configuration.EmailFromAddress, this.configuration.EmailToAddress.Split(','), this.configuration.EmailSubject, emailContent, BodyType.Html);
+                await this.emailManager.SendEmail(this.configuration.EmailFromAddress, this.configuration.EmailToAzureAdmins.Split(','), owners.ToArray(), this.configuration.EmailSubject, emailContent);
 
                 return new OkResult();
             }

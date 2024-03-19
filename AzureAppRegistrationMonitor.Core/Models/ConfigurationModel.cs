@@ -10,7 +10,7 @@
 
         public string EmailSubject { get; set; } = default!;
 
-        public string EmailToAddress { get; set; } = default!;
+        public string EmailToAzureAdmins { get; set; } = default!;
 
         public string TenantId { get; set; } = default!;
 

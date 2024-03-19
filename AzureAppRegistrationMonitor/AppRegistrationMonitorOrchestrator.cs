@@ -61,8 +61,7 @@ namespace AzureAppRegistrationMonitor
                     appsToBeNotified.AddRange(task.Result);
                 }
 
-                var emailContent = this.emailManager.GenerateEmailBody(appsToBeNotified.ToList());
-                await context.CallActivityAsync<Task>(nameof(SendEmail), emailContent);
+                await context.CallActivityAsync<Task>(nameof(SendEmail), appsToBeNotified);
             }
             catch (System.Exception ex)
             {
@@ -83,9 +82,17 @@ namespace AzureAppRegistrationMonitor
         }
 
         [FunctionName(nameof(SendEmail))]
-        public async Task SendEmail([ActivityTrigger] string content)
+        public async Task SendEmail([ActivityTrigger] List<CredentialModel> appsToBeNotified)
         {
-            await this.emailManager.SendEmail(this.configuration.EmailFromAddress, this.configuration.EmailToAddress.Split(','), this.configuration.EmailSubject, content, BodyType.Html);
+            var content = this.emailManager.GenerateEmailBody(appsToBeNotified);
+            var owners = new List<string>();
+            appsToBeNotified.Select(x =>
+            {
+                owners.AddRange(x.Owners);
+                return x;
+            });
+
+            await this.emailManager.SendEmail(this.configuration.EmailFromAddress, this.configuration.EmailToAzureAdmins.Split(','), owners.ToArray(), this.configuration.EmailSubject, content);
         }
     }
 }

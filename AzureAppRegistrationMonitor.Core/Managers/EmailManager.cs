@@ -63,7 +63,7 @@ namespace AzureAppRegistrationMonitor.Core.Managers
             return content.ToString();
         }
 
-        public async Task SendEmail(string fromAddress, string[] toAddresss, string subject, string content, BodyType bodyType)
+        public async Task SendEmail(string fromAddress, string[] toAddresss, string[] ccEmails, string subject, string content, BodyType bodyType = BodyType.Html)
         {
             if (toAddresss.Length == 0)
             {
@@ -80,10 +80,10 @@ namespace AzureAppRegistrationMonitor.Core.Managers
                 },
             };
 
-            List<Recipient> receipents = new List<Recipient>(toAddresss.Length);
+            List<Recipient> toReceipents = new List<Recipient>(toAddresss.Length);
             foreach (var toAddress in toAddresss)
             {
-                receipents.Add(new Recipient
+                toReceipents.Add(new Recipient
                 {
                     EmailAddress = new EmailAddress
                     {
@@ -92,7 +92,20 @@ namespace AzureAppRegistrationMonitor.Core.Managers
                 });
             }
 
-            message.ToRecipients = receipents;
+            List<Recipient> ccRecipients = new List<Recipient>(ccEmails.Length);
+            foreach (var ccEmail in ccEmails)
+            {
+                toReceipents.Add(new Recipient
+                {
+                    EmailAddress = new EmailAddress
+                    {
+                        Address = ccEmail,
+                    },
+                });
+            }
+
+            message.CcRecipients = ccRecipients;
+            message.ToRecipients = toReceipents;
 
             SendMailPostRequestBody body = new()
             {
