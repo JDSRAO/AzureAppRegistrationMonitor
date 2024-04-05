@@ -2,12 +2,10 @@ using AzureAppRegistrationMonitor.Core.Managers;
 using AzureAppRegistrationMonitor.Core.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Graph.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace AzureAppRegistrationMonitor
@@ -25,19 +23,6 @@ namespace AzureAppRegistrationMonitor
             this.appRegistrationManager = appRegistrationManager;
             this.emailManager = emailManager;
             this.configuration = configurationModel;
-        }
-
-        [FunctionName("StartOrchestrator")]
-        public async Task<HttpResponseMessage> StartOrchestrator(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "orchestrators/StartOrchestrator")] HttpRequestMessage req,
-            [DurableClient] IDurableOrchestrationClient starter)
-        {
-            // Function input comes from the request content.
-            string instanceId = await starter.StartNewAsync("Orchestrator", null);
-
-            this.logger.LogInformation("Started orchestration with ID = '{instanceId}'.", instanceId);
-
-            return starter.CreateCheckStatusResponse(req, instanceId);
         }
 
         [FunctionName("Orchestrator")]
