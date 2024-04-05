@@ -2,6 +2,8 @@
 {
     public class ConfigurationModel
     {
+        public string APPLICATIONINSIGHTS_CONNECTION_STRING {get;set;}
+
         public string ClientId { get; set; } = default!;
 
         public string ClientSecret { get; set; } = default!;

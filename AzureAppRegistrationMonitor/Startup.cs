@@ -4,6 +4,7 @@ using AzureAppRegistrationMonitor.Core.Models;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
 
 [assembly: FunctionsStartup(typeof(AzureAppRegistrationMonitor.Startup))]
@@ -13,10 +14,19 @@ namespace AzureAppRegistrationMonitor
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            var config = new ConfigurationModel();
-            builder.GetContext().Configuration.Bind(config);
+            var configurationModel = new ConfigurationModel();
+            builder.GetContext().Configuration.Bind(configurationModel);
 
-            builder.Services.AddSingleton<ConfigurationModel>(config);
+            builder.Services.AddLogging(builder =>
+            {
+                // Only Application Insights is registered as a logger provider
+                builder.AddApplicationInsights(
+                    configureTelemetryConfiguration: (config) => config.ConnectionString = configurationModel.APPLICATIONINSIGHTS_CONNECTION_STRING,
+                    configureApplicationInsightsLoggerOptions: (options) => { }
+                );
+            });
+
+            builder.Services.AddSingleton<ConfigurationModel>(configurationModel);
 
             builder.Services.AddSingleton<GraphServiceClient>(x =>
             {
