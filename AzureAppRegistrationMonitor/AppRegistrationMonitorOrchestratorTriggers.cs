@@ -20,16 +20,13 @@ namespace AzureAppRegistrationMonitor
 
         [FunctionName("TimerOrchestrator")]
         public async Task TimerOrchestratorAsync
-            ([TimerTrigger("%AppRegistrationMonitorOrchestratorTimerScheduleCron%")]TimerInfo myTimer,
+            ([TimerTrigger("%AppRegistrationMonitorOrchestratorTimerScheduleCron%")]TimerInfo timer,
             [DurableClient] IDurableOrchestrationClient starter)
         {
             try
             {
-                this.logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
-                // Function input comes from the request content.
-                string instanceId = await starter.StartNewAsync("Orchestrator", null);
-
-                this.logger.LogInformation("Started orchestration with ID = '{instanceId}'.", instanceId);
+                string instanceId = await starter.StartNewAsync(nameof(AppRegistrationMonitorOrchestrator.AppRegistrationOrchestrator), null);
+                this.logger.LogInformation($"Started {nameof(AppRegistrationMonitorOrchestrator.AppRegistrationOrchestrator)} with ID = '{instanceId}'.", instanceId);
             }
             catch (Exception ex)
             {
@@ -44,10 +41,8 @@ namespace AzureAppRegistrationMonitor
         {
             try
             {
-                // Function input comes from the request content.
-                string instanceId = await starter.StartNewAsync("Orchestrator", null);
-
-                this.logger.LogInformation("Started orchestration with ID = '{instanceId}'.", instanceId);
+                string instanceId = await starter.StartNewAsync(nameof(AppRegistrationMonitorOrchestrator.AppRegistrationOrchestrator), null);
+                this.logger.LogInformation($"Started {nameof(AppRegistrationMonitorOrchestrator.AppRegistrationOrchestrator)} with ID = '{instanceId}'.", instanceId);
 
                 return starter.CreateCheckStatusResponse(req, instanceId);
             }

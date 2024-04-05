@@ -25,8 +25,8 @@ namespace AzureAppRegistrationMonitor
             this.configuration = configurationModel;
         }
 
-        [FunctionName("Orchestrator")]
-        public async Task RunOrchestrator([OrchestrationTrigger] IDurableOrchestrationContext context)
+        [FunctionName(nameof(AppRegistrationMonitorOrchestrator.AppRegistrationOrchestrator))]
+        public async Task AppRegistrationOrchestrator([OrchestrationTrigger] IDurableOrchestrationContext context)
         {
             try
             {
