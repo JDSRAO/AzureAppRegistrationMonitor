@@ -46,10 +46,12 @@ namespace AzureAppRegistrationMonitor.Core.Managers
                         requestConfiguration.QueryParameters.Search = apiFilter.ToString();
                         requestConfiguration.Headers.Add("ConsistencyLevel", "eventual");
                     });
+
                     odataNextLink = applications.OdataNextLink;
                     apps.AddRange(applications.Value);
                 }
-            } while (odataNextLink != null);
+            }
+            while (odataNextLink != null);
 
             return apps;
         }
