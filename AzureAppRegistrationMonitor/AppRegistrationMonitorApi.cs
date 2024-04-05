@@ -30,8 +30,8 @@ namespace AzureAppRegistrationMonitor
         }
 
         [FunctionName("MonitorApps")]
-        public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req)
+        public async Task<IActionResult> MonitorAppsAsync
+            ([HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req)
         {
             try
             {

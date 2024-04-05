@@ -19,7 +19,8 @@ namespace AzureAppRegistrationMonitor
         }
 
         [FunctionName("TimerOrchestrator")]
-        public async Task Run([TimerTrigger("%AppRegistrationMonitorOrchestratorTimerScheduleCron%")]TimerInfo myTimer,
+        public async Task TimerOrchestratorAsync
+            ([TimerTrigger("%AppRegistrationMonitorOrchestratorTimerScheduleCron%")]TimerInfo myTimer,
             [DurableClient] IDurableOrchestrationClient starter)
         {
             try
@@ -37,8 +38,8 @@ namespace AzureAppRegistrationMonitor
         }
 
         [FunctionName("HttpOrchestrator")]
-        public async Task<HttpResponseMessage> StartOrchestrator(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "orchestrators/HttpOrchestrator")] HttpRequestMessage req,
+        public async Task<HttpResponseMessage> HttpOrchestratorAsync
+            ([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "orchestrators/HttpOrchestrator")] HttpRequestMessage req,
             [DurableClient] IDurableOrchestrationClient starter)
         {
             try
