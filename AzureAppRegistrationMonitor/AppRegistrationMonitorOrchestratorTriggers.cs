@@ -19,7 +19,7 @@ namespace AzureAppRegistrationMonitor
         }
 
         [FunctionName("TimerOrchestrator")]
-        public async Task Run([TimerTrigger("0 */1 * * * *")]TimerInfo myTimer,
+        public async Task Run([TimerTrigger("%AppRegistrationMonitorOrchestratorTimerScheduleCron%")]TimerInfo myTimer,
             [DurableClient] IDurableOrchestrationClient starter)
         {
             try
