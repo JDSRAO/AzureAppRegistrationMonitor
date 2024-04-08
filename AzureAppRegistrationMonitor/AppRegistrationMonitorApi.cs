@@ -66,7 +66,7 @@ namespace AzureAppRegistrationMonitor
                     await this.emailManager.SendEmail(this.configuration.EmailFromAddress, this.configuration.EmailToAzureAdmins.Split(';'), owners.ToArray(), this.configuration.EmailSubject, emailContent);
                 }
 
-                return new OkResult();
+                return new OkObjectResult(appsToBeNotified);
             }
             catch (Exception ex)
             {
