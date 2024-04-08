@@ -59,7 +59,7 @@ namespace AzureAppRegistrationMonitor.Core.Managers
                 content.AppendLine($"<td>{app.Type}</td>");
                 content.AppendLine($"<td>{app.DaysUntilExpiry}</td>");
                 content.AppendLine($"<td>{app.ExpiryDate}</td>");
-                content.AppendLine($"<td>{string.Join(",", app.Owners)}</td>");                
+                content.AppendLine($"<td>{string.Join(";", app.Owners)}</td>");                
             }
 
             content.AppendLine("</tbody>");
