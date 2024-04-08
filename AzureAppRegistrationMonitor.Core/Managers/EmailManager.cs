@@ -33,6 +33,7 @@ namespace AzureAppRegistrationMonitor.Core.Managers
             content.AppendLine("<body>");
 
             content.AppendLine("<p> Hi, </br> Please make a note on the expiry dates for the below app registrations and take necessary actions </p>");
+            content.AppendLine("<p> <b> <i> </i> Please note that this an auto generated email, please contact people mentioned in \"To\" section for any queries. </b> </p>");
 
             content.AppendLine("<table>");
             content.AppendLine("<thead>");
