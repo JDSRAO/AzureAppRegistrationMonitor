@@ -80,7 +80,7 @@ namespace AzureAppRegistrationMonitor
                 return x;
             });
 
-            await this.emailManager.SendEmail(this.configuration.EmailFromAddress, this.configuration.EmailToAzureAdmins.Split(','), owners.ToArray(), this.configuration.EmailSubject, content);
+            await this.emailManager.SendEmail(this.configuration.EmailFromAddress, this.configuration.EmailToAzureAdmins.Split(';'), owners.ToArray(), this.configuration.EmailSubject, content);
         }
     }
 }

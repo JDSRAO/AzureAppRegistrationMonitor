@@ -61,7 +61,7 @@ namespace AzureAppRegistrationMonitor
                     });
 
                     var emailContent = this.emailManager.GenerateEmailBody(appsToBeNotified.ToList());
-                    await this.emailManager.SendEmail(this.configuration.EmailFromAddress, this.configuration.EmailToAzureAdmins.Split(','), owners.ToArray(), this.configuration.EmailSubject, emailContent);
+                    await this.emailManager.SendEmail(this.configuration.EmailFromAddress, this.configuration.EmailToAzureAdmins.Split(';'), owners.ToArray(), this.configuration.EmailSubject, emailContent);
                 }
 
                 return new OkResult();

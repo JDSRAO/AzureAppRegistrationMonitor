@@ -18,6 +18,8 @@ namespace AzureAppRegistrationMonitor.Core.Managers
         public string GenerateEmailBody(List<CredentialModel> apps)
         {
             var content = new StringBuilder();
+            content.AppendLine("<html>");
+            content.AppendLine("<head>");
 
             content.AppendLine("<style>");
             content.AppendLine("table { border-collapse:collapse; }");
@@ -26,6 +28,9 @@ namespace AzureAppRegistrationMonitor.Core.Managers
             content.AppendLine(" .red { background-color:red; font-family: Calibri; padding: 5px; border: 1px solid black; } ");
             content.AppendLine(" . yellow { background-color:yellow; font-family: Calibri; padding: 5px; border: 1px solid black; }");
             content.AppendLine("</style>");
+            
+            content.AppendLine("</head>");
+            content.AppendLine("<body>");
 
             content.AppendLine("<p> Hi, </br> Please make a note on the expiry dates for the below app registrations and take necessary actions </p>");
 
@@ -59,6 +64,9 @@ namespace AzureAppRegistrationMonitor.Core.Managers
 
             content.AppendLine("</tbody>");
             content.AppendLine("</table>");
+
+            content.AppendLine("/<body>");
+            content.AppendLine("/<html>");
 
             return content.ToString();
         }

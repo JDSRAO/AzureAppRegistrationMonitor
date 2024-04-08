@@ -2,7 +2,7 @@
 {
     public class ConfigurationModel
     {
-        public string APPLICATIONINSIGHTS_CONNECTION_STRING {get;set;}
+        public string APPLICATIONINSIGHTS_CONNECTION_STRING {get;set;} = default!
 
         public string ClientId { get; set; } = default!;
 
@@ -19,5 +19,7 @@
         public int TimeInDaysForNotification { get; set; } = default!;
 
         public string SearchCriteria { get; set; } = default!;
+
+        public bool IncludeExpiredCredentails { get; set; }= default!;
     }
 }
