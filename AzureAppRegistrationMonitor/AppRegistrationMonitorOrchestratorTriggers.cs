@@ -36,7 +36,7 @@ namespace AzureAppRegistrationMonitor
 
         [FunctionName("HttpOrchestrator")]
         public async Task<HttpResponseMessage> HttpOrchestratorAsync
-            ([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "orchestrators/HttpOrchestrator")] HttpRequestMessage req,
+            ([HttpTrigger(AuthorizationLevel.Function, "get", Route = "orchestrators/HttpOrchestrator")] HttpRequestMessage req,
             [DurableClient] IDurableOrchestrationClient starter)
         {
             try
