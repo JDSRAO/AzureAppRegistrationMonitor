@@ -21,5 +21,7 @@
         public string SearchCriteria { get; set; } = default!;
 
         public bool IncludeExpiredCredentails { get; set; }= default!;
+
+        public bool IncludeOwnersInEmail { get; set; } = default!;
     }
 }

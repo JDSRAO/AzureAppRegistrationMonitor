@@ -54,11 +54,13 @@ namespace AzureAppRegistrationMonitor
                 if (appsToBeNotified.Any())
                 {
                     var owners = new List<string>();
-                    appsToBeNotified.Select(x =>
+                    if (this.configuration.IncludeOwnersInEmail)
                     {
-                        owners.AddRange(x.Owners);
-                        return x;
-                    });
+                        foreach (var appToBeNotified in appsToBeNotified)
+                        {
+                            owners.AddRange(appToBeNotified.Owners);
+                        }
+                    }
 
                     var emailContent = this.emailManager.GenerateEmailBody(appsToBeNotified.ToList());
                     await this.emailManager.SendEmail(this.configuration.EmailFromAddress, this.configuration.EmailToAzureAdmins.Split(';'), owners.ToArray(), this.configuration.EmailSubject, emailContent);
