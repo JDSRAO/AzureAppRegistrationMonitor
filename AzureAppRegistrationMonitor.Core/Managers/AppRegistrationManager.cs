@@ -33,7 +33,7 @@ namespace AzureAppRegistrationMonitor.Core.Managers
                     var applications = await this.graphServiceClient.Applications.GetAsync((requestConfiguration) =>
                     {
                         var filters = new List<string>();
-                        foreach (var filter in this.configuration.SearchCriteria.Split(","))
+                        foreach (var filter in this.configuration.SearchCriteria.Split(";"))
                         {
                             filters.Add($"\"displayName:{filter}\"");
                         }
