@@ -31,6 +31,7 @@ namespace AzureAppRegistrationMonitor
             try
             {
                 var apps = await context.CallActivityAsync<List<Application>>(nameof(GetAppRegistrationsAcync), null);
+                this.logger.LogInformation($"{nameof(AppRegistrationOrchestrator)} Apps Count: {apps.Count}");
                 var tasks = new List<Task<List<CredentialModel>>>();
                 foreach (var app in apps)
                 {
@@ -45,6 +46,8 @@ namespace AzureAppRegistrationMonitor
                 {
                     appsToBeNotified.AddRange(task.Result);
                 }
+
+                this.logger.LogInformation($"{nameof(AppRegistrationOrchestrator)} AppsToBeNotified Count: {appsToBeNotified.Count}");
 
                 if (appsToBeNotified.Any())
                 {
