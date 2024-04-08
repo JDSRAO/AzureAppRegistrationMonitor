@@ -52,7 +52,7 @@ The easiest way to use this proejct without using Git is to download the zip fil
 - EmailSubject - Subject of the summary email.
 - EmailToAzureAdmins - A semicolon (;) separated values of email(s), to whom the summary email should be sent for action. For example, user1@email.com;user2@email.com
 - IncludeExpiredCredentails - Flag to either include or exclude expired credentails from the summary email (supported values true/false).
-- IncludeOwnersInEmail - Flas to either include or exclude owners in the CC section of the summary email.
+- IncludeOwnersInEmail - Flag to either include or exclude owners in the CC section of the summary email.
 - SearchCriteria - A semicolon (;) seperated search criteria based on which app registrations are filtered. If nothing is specified, the monitor will include all the app registaritons.
 - TenantId - Follow steps mentioned in Microsoft Entra ID Configuration to get this value.
 - TimeInDaysForNotification - Number of days before expiration when the notification needs to be sent.
