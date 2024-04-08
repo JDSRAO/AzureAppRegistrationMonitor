@@ -80,7 +80,7 @@ namespace AzureAppRegistrationMonitor.Core.Managers
                     if (credential.EndDateTime.HasValue)
                     {
                         var interval = Math.Round((credential.EndDateTime - DateTime.UtcNow).Value.TotalDays);
-                        if ((this.configuration.IncludeExpiredCredentails && interval < 0) || (interval > 0 && interval <= numberOfDays))
+                        if ((this.configuration.IncludeExpiredCredentails && interval <= 0) || (interval > 0 && interval <= numberOfDays))
                         {
                             invalidCredentials.Add(new CredentialModel
                             {
@@ -105,7 +105,7 @@ namespace AzureAppRegistrationMonitor.Core.Managers
                     if (credential.EndDateTime.HasValue)
                     {
                         var interval = Math.Round((credential.EndDateTime - DateTime.UtcNow).Value.TotalDays);
-                        if ((this.configuration.IncludeExpiredCredentails && interval < 0) || (interval > 0 && interval <= numberOfDays))
+                        if ((this.configuration.IncludeExpiredCredentails && interval <= 0) || (interval > 0 && interval <= numberOfDays))
                         {
                             invalidCredentials.Add(new CredentialModel
                             {
