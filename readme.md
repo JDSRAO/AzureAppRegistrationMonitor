@@ -45,12 +45,15 @@ The easiest way to use this proejct without using Git is to download the zip fil
 		- User.Read
 
 ### Function App Configuration Instructions
+- AppRegistrationMonitorOrchestratorTimerScheduleCron - Schedule to run the app monitor in CRON expression.
 - ClientId - Follow steps mentioned in Microsoft Entra ID Configuration to get this value.
 - ClientSecret - Follow steps mentioned in Microsoft Entra ID Configuration to get this value.
-- EmailFromAddress - 
-- EmailSubject - Subject of the summary email that contains the list of app registations for whom action needs to be taken.
-- FromAddress - An email, from which mailbox the summary email should be sent. Please note that, this user should have an active mailbox.
-- EmailToAddress - A comppa separated values of email(s),, to whom the summary email should be sent for action. For example, user1@email.com,user2@email.com
+- EmailFromAddress - An email, from which mailbox the summary email should be sent. Please note that, this user should have an active mailbox
+- EmailSubject - Subject of the summary email.
+- EmailToAzureAdmins - A semicolon (;) separated values of email(s), to whom the summary email should be sent for action. For example, user1@email.com;user2@email.com
+- IncludeExpiredCredentails - Flag to either include or exclude expired credentails from the summary email (supported values true/false).
+- IncludeOwnersInEmail - Flag to either include or exclude owners in the CC section of the summary email.
+- SearchCriteria - A semicolon (;) seperated search criteria based on which app registrations are filtered. If nothing is specified, the monitor will include all the app registaritons.
 - TenantId - Follow steps mentioned in Microsoft Entra ID Configuration to get this value.
 - TimeInDaysForNotification - Number of days before expiration when the notification needs to be sent.
 
